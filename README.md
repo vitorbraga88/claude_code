@@ -2,30 +2,57 @@
 
 Documentação, skills e guias de referência para uso do Claude Code no **servidor-203** (Mac mini 2012, Ubuntu 24.04, produção doméstica).
 
+---
+
 ## Estrutura
 
 ```
 claude_code/
-├── guias/                                    # Guias de referência aprofundados
-│   └── loop-engineering-guia.md             # Loop Engineering — padrões, anti-padrões, aplicação local
-├── skills/                                   # Skills registradas no Claude Code
+├── guias/                                      # Guias de referência aprofundados
+│   ├── claude-code-referencia.md              # Referência completa: Skills, Plugins, MCPs e funções nativas
+│   ├── find-skills-uso.md                     # Como usar a skill find-skills para descobrir skills
+│   └── loop-engineering-guia.md              # Loop Engineering — padrões, anti-padrões, aplicação local
+├── skills/                                     # Skills registradas no Claude Code
+│   ├── find-skills/
+│   │   └── SKILL.md                           # Skill: descobre e instala skills do ecossistema skills.sh
 │   └── loop-engineering/
-│       └── SKILL.md                         # Skill: projeta e opera loops de agentes
-└── loops/                                    # Loops ativos no servidor-203
+│       └── SKILL.md                           # Skill: projeta e opera loops de agentes
+└── loops/                                      # Loops ativos no servidor-203
     └── daily-triage-servidor203/
-        ├── LOOP.md                           # Documentação e comando de início
-        ├── SKILL.md                          # Skill de triage (loop-triage-servidor203)
-        ├── STATE.md                          # Estado atual do loop
-        ├── loop-run-log.md                   # Histórico append-only de cada run
-        └── loop-budget.md                    # Limites de tokens e kill switch
+        ├── LOOP.md                             # Documentação e comando de início
+        ├── SKILL.md                            # Skill de triage (loop-triage-servidor203)
+        ├── STATE.md                            # Estado atual do loop
+        ├── loop-run-log.md                     # Histórico append-only de cada run
+        └── loop-budget.md                      # Limites de tokens e kill switch
 ```
 
-## Skills disponíveis
+---
 
-| Skill | Trigger | Descrição |
-|-------|---------|-----------|
-| `loop-engineering` | `/loop`, STATE.md, automação de agentes | Padrões, primitivos, anti-padrões e regras para loops no Claude Code |
-| `loop-triage-servidor203` | triage diária, docker ps, saúde containers | Triage L1 do servidor-203 — coleta e reporta, nunca age |
+## Skills instaladas
+
+Skills ficam em `~/.claude/skills/` e são carregadas automaticamente pelo Claude Code quando o contexto bate com o `description` da skill.
+
+| Skill | Origem | Trigger | Descrição |
+|-------|--------|---------|-----------|
+| `find-skills` | [vercel-labs/skills](https://github.com/vercel-labs/skills) | "find a skill for X", "tem skill para X" | Descobre e instala skills do ecossistema aberto |
+| `loop-engineering` | local | /loop, STATE.md, automação recorrente | Padrões para construir e operar loops de agentes |
+| `loop-triage-servidor203` | local | triage diária, docker ps, saúde containers | Coleta saúde do servidor-203 — reporta, nunca age |
+| `hermes-social` | local | Hermes, Postiz, trends, stories automáticos | Pipeline de conteúdo automatizado para Instagram/LinkedIn |
+| `karpathy-guidelines` | [forrestchang/andrej-karpathy-skills](https://github.com/forrestchang/andrej-karpathy-skills) (plugin) | escrita/revisão de código | Diretrizes anti-overcomplication de Andrej Karpathy |
+
+---
+
+## Plugins / MCPs instalados
+
+Plugins são servidores MCP que expõem ferramentas de ação ao Claude. Configurados em `~/.claude/settings.json`.
+
+| Plugin | Tipo | Ferramentas | Uso |
+|--------|------|-------------|-----|
+| `karpathy-guidelines` | Plugin GitHub | Skill via marketplace | Código mais simples e direto |
+| Google Drive | MCP (claude.ai) | `read_file`, `search_files`, `create_file` | Leitura e escrita de documentos |
+| Claude Code Remote | MCP (claude.ai) | `create_trigger`, `add_repo`, `send_later` | Agendamento de tarefas na nuvem |
+
+---
 
 ## Loops ativos
 
@@ -33,17 +60,23 @@ claude_code/
 |------|-------|----------|---------|
 | [Daily Triage](loops/daily-triage-servidor203/LOOP.md) | L1 report-only | 2h | ver LOOP.md |
 
+---
+
 ## Guias
 
-| Guia | Fonte | Descrição |
-|------|-------|-----------|
-| [Loop Engineering](guias/loop-engineering-guia.md) | [cobusgreyling/loop-engineering](https://github.com/cobusgreyling/loop-engineering) | Conceitos, 7 padrões de produção, checklist, modos de falha, aplicação ao servidor-203 |
+| Guia | Descrição |
+|------|-----------|
+| [Claude Code — Referência Completa](guias/claude-code-referencia.md) | Skills, Plugins, MCPs, comandos `/`, sub-agentes, memória, settings |
+| [find-skills — Guia de Uso](guias/find-skills-uso.md) | Como usar a skill para descobrir e instalar skills do ecossistema |
+| [Loop Engineering](guias/loop-engineering-guia.md) | Conceitos, 7 padrões de produção, checklist, modos de falha |
+
+---
 
 ## Contexto do servidor-203
 
 - Hardware: Mac mini 2012, sem GPU, RAM limitada
-- SO: Ubuntu Server 24.04
+- SO: Ubuntu Server 24.04 — Fuso: `America/Recife`
 - Acesso: Tailscale
-- Fuso: `America/Recife`
 - Orquestração: Docker Compose + Portainer
-- Pipeline crítico: `WhatsApp → pedido → Pix → impressora` via n8n (não interromper)
+- Pipeline crítico: `WhatsApp → pedido → Pix → impressora` via n8n — **não interromper**
+- Regras de operação: ver `/home/vitorbraga/CLAUDE.md`
