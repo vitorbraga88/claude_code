@@ -6,11 +6,18 @@ Documentação, skills e guias de referência para uso do Claude Code no **servi
 
 ```
 claude_code/
-├── guias/                          # Guias de referência aprofundados
-│   └── loop-engineering-guia.md   # Loop Engineering — padrões, anti-padrões, aplicação local
-└── skills/                         # Skills registradas no Claude Code
-    └── loop-engineering/
-        └── SKILL.md               # Skill: projeta e opera loops de agentes
+├── guias/                                    # Guias de referência aprofundados
+│   └── loop-engineering-guia.md             # Loop Engineering — padrões, anti-padrões, aplicação local
+├── skills/                                   # Skills registradas no Claude Code
+│   └── loop-engineering/
+│       └── SKILL.md                         # Skill: projeta e opera loops de agentes
+└── loops/                                    # Loops ativos no servidor-203
+    └── daily-triage-servidor203/
+        ├── LOOP.md                           # Documentação e comando de início
+        ├── SKILL.md                          # Skill de triage (loop-triage-servidor203)
+        ├── STATE.md                          # Estado atual do loop
+        ├── loop-run-log.md                   # Histórico append-only de cada run
+        └── loop-budget.md                    # Limites de tokens e kill switch
 ```
 
 ## Skills disponíveis
@@ -18,6 +25,13 @@ claude_code/
 | Skill | Trigger | Descrição |
 |-------|---------|-----------|
 | `loop-engineering` | `/loop`, STATE.md, automação de agentes | Padrões, primitivos, anti-padrões e regras para loops no Claude Code |
+| `loop-triage-servidor203` | triage diária, docker ps, saúde containers | Triage L1 do servidor-203 — coleta e reporta, nunca age |
+
+## Loops ativos
+
+| Loop | Nível | Cadência | Comando |
+|------|-------|----------|---------|
+| [Daily Triage](loops/daily-triage-servidor203/LOOP.md) | L1 report-only | 2h | ver LOOP.md |
 
 ## Guias
 
